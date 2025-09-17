@@ -1,0 +1,148 @@
+/* ============================= */
+/*        VARIABLES             */
+/* ============================= */
+:root {
+    --neon-purple: #b300ff;
+    --neon-pink: #ff33ff;
+    --neon-dark: #0d0d0d;
+    --neon-card: #111111;
+    --neon-text: #ffffff;
+    --neon-glow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-pink);
+}
+
+/* ============================= */
+/*        BODY & LAYOUT          */
+/* ============================= */
+body {
+    background-color: var(--neon-dark);
+    color: var(--neon-text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ============================= */
+/*        HEADINGS               */
+/* ============================= */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--neon-purple);
+    text-shadow: var(--neon-glow);
+    margin-bottom: 1rem;
+}
+
+/* ============================= */
+/*        BUTTONS                */
+/* ============================= */
+.btn {
+    color: var(--neon-text) !important;
+    background-color: var(--neon-purple);
+    border: 1px solid var(--neon-purple);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    box-shadow: var(--neon-glow);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: transparent;
+    color: var(--neon-purple) !important;
+    box-shadow: 0 0 20px var(--neon-purple), 0 0 40px var(--neon-pink);
+}
+
+/* ============================= */
+/*        CARDS                  */
+/* ============================= */
+.card {
+    background-color: var(--neon-card);
+    border: 1px solid var(--neon-purple);
+    border-radius: 12px;
+    box-shadow: var(--neon-glow) inset;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-header {
+    color: var(--neon-purple);
+    font-weight: bold;
+    text-shadow: var(--neon-glow);
+    border-bottom: 1px solid var(--neon-purple);
+}
+
+/* ============================= */
+/*        TABLES                 */
+/* ============================= */
+.table {
+    color: var(--neon-text);
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid var(--neon-purple);
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.table thead th {
+    color: var(--neon-pink);
+    text-shadow: var(--neon-glow);
+}
+
+/* ============================= */
+/*        FORMS                  */
+/* ============================= */
+input, textarea, select {
+    background-color: var(--neon-card);
+    color: var(--neon-purple);
+    border: 1px solid var(--neon-purple);
+    box-shadow: inset var(--neon-glow);
+    padding: 0.5rem;
+    border-radius: 6px;
+    width: 100%;
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--neon-pink);
+    opacity: 0.7;
+}
+
+/* ============================= */
+/*        LINKS                  */
+/* ============================= */
+a {
+    color: var(--neon-purple);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    text-shadow: var(--neon-glow);
+}
+
+/* ============================= */
+/*        ALERTS / FLASH         */
+/* ============================= */
+.alert {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--neon-glow);
+}
+
+.alert-success { background-color: #220033; color: #a0ff; }
+.alert-danger  { background-color: #330022; color: #ff33ff; }
+.alert-info    { background-color: #002233; color: #0ff; }
+.alert-warning { background-color: #333300; color: #ffcc00; }
+
+/* ============================= */
+/*        CHARTS                 */
+/* ============================= */
+canvas {
+    background-color: var(--neon-card);
+    border-radius: 12px;
+    box-shadow: var(--neon-glow) inset;
+}

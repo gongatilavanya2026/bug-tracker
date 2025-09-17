@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Bug Tracker</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #15bf48ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+        }
+        .container { max-width: 500px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(90deg, #b300ff, #ff33ff, #33fff0, #00ff99);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 5px #b300ff, 0 0 10px #ff33ff, 0 0 20px #33fff0;
+        }
+
+        form {
+            background-color: #111111;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid;
+            border-image: linear-gradient(45deg, #b300ff, #ff33ff, #33fff0, #00ff99) 1;
+            box-shadow: 0 0 10px #b300ff, 0 0 20px #ff33ff, 0 0 30px #33fff0;
+        }
+
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid #33fff0;
+            background-color: #1a1a1a;
+            color: #d3e1b8ff;
+            box-shadow: 0 0 5px #33fff0 inset;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(90deg, #33ff99, #33fff0);
+            color: #0d0d0d;
+            box-shadow: 0 0 10px #33ff99, 0 0 20px #33fff0;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(270deg, #33fff0, #33ff99);
+            box-shadow: 0 0 20px #33fff0, 0 0 40px #33ff99;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .links a {
+            color: #33fff0;
+            text-decoration: none;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{category}}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <input type="password" name="password" placeholder="Enter your password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="links">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+        </div>
+    </div>
+</body>
+</html>

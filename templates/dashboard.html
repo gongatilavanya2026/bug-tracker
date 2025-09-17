@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bug Tracker Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #e0ffe0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        h1 {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(90deg, #c500ff, #ff00c8, #00fff7, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px #c500ff, 0 0 20px #ff00c8, 0 0 30px #00fff7, 0 0 40px #00ff88;
+        }
+
+        .card {
+            background-color: #111111;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid;
+            border-image: linear-gradient(45deg, #c500ff, #ff00c8, #00fff7, #00ff88) 1;
+            box-shadow: 0 0 10px #c500ff, 0 0 20px #ff00c8, 0 0 30px #00fff7;
+            text-align: center;
+        }
+        .card h5 { margin-bottom: 0.5rem; color: #ff33ff; text-shadow: 0 0 5px #ff00c8; }
+        .card h3 { color: #00fff7; text-shadow: 0 0 10px #00fff7, 0 0 20px #00ff88, 0 0 30px #ff33ff; }
+
+        .btn {
+            color: #fff;
+            background: linear-gradient(90deg, #c500ff, #ff00c8, #00fff7, #00ff88);
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            margin-top: 1rem;
+            box-shadow: 0 0 10px #c500ff, 0 0 20px #ff00c8, 0 0 30px #00fff7;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: linear-gradient(270deg, #00ff88, #00fff7, #ff00c8, #c500ff);
+            box-shadow: 0 0 20px #00fff7, 0 0 40px #ff00c8, 0 0 60px #c500ff;
+        }
+
+        .card-header {
+            font-weight: bold;
+            color: #ff33ff;
+            text-shadow: 0 0 5px #c500ff;
+            margin-bottom: 1rem;
+        }
+        canvas { background-color: #111111; border-radius: 12px; box-shadow: 0 0 10px #c500ff, 0 0 20px #ff00c8 inset; }
+    </style>
+</head>
+<body class="container mt-5">
+    <h1>📊 QA Bug Tracker Dashboard</h1>
+
+    <!-- Total Bugs Cards -->
+    <div class="row mb-4 text-center" style="display:flex; gap:1rem; justify-content:center;">
+        <div class="card" style="flex:1; min-width:150px;">
+            <h5>Total Bugs</h5>
+            <h3>{{ total_bugs }}</h3>
+        </div>
+        <div class="card" style="flex:1; min-width:150px;">
+            <h5>Open Bugs</h5>
+            <h3>{{ open_bugs }}</h3>
+        </div>
+        <div class="card" style="flex:1; min-width:150px;">
+            <h5>Resolved Bugs</h5>
+            <h3>{{ resolved_bugs }}</h3>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row" style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <div class="card" style="flex:1; min-width:300px;">
+            <div class="card-header">Bugs by Severity</div>
+            <canvas id="severityChart"></canvas>
+        </div>
+        <div class="card" style="flex:1; min-width:300px;">
+            <div class="card-header">Bugs by Status</div>
+            <canvas id="statusChart"></canvas>
+        </div>
+        <div class="card" style="flex:1; min-width:300px;">
+            <div class="card-header">Bugs by Priority</div>
+            <canvas id="priorityChart"></canvas>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+    </div>
+
+    <script>
+        // Severity Chart
+        const severityLabels = [{% for row in severity_counts %}"{{ row['severity'] }}",{% endfor %}];
+        const severityData = [{% for row in severity_counts %}{{ row['count'] }},{% endfor %}];
+        new Chart(document.getElementById('severityChart').getContext('2d'), {
+            type: 'pie',
+            data: { labels: severityLabels, datasets: [{ data: severityData, backgroundColor: ['#c500ff','#ff00c8','#00fff7','#00ff88'] }] },
+            options: { responsive:true }
+        });
+
+        // Status Chart
+        const statusLabels = [{% for row in status_counts %}"{{ row['status'] }}",{% endfor %}];
+        const statusData = [{% for row in status_counts %}{{ row['count'] }},{% endfor %}];
+        new Chart(document.getElementById('statusChart').getContext('2d'), {
+            type: 'bar',
+            data: { labels: statusLabels, datasets: [{ data: statusData, backgroundColor: ['#ff0066','#ff9900','#3399ff','#33ff99'] }] },
+            options: { responsive:true, scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } } }
+        });
+
+        // Priority Chart
+        const priorityLabels = [{% for row in priority_counts %}"{{ row['priority'] }}",{% endfor %}];
+        const priorityData = [{% for row in priority_counts %}{{ row['count'] }},{% endfor %}];
+        new Chart(document.getElementById('priorityChart').getContext('2d'), {
+            type: 'doughnut',
+            data: { labels: priorityLabels, datasets: [{ data: priorityData, backgroundColor: ['#c500ff','#ff00c8','#00fff7','#00ff88'] }] },
+            options: { responsive:true }
+        });
+    </script>
+</body>
+</html>

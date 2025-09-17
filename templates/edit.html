@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Bug</title>
+    <style>
+        /* ================= BODY ================= */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+        }
+        .container { max-width: 700px; margin: 0 auto; }
+
+        /* ================= HEADINGS ================= */
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #c500ff, #ff00c8, #00fff7, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px #c500ff, 0 0 20px #ff00c8, 0 0 30px #00fff7;
+        }
+
+        /* ================= CARD ================= */
+        .card {
+            background-color: #1c1c1c;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid;
+            border-image: linear-gradient(45deg, #c500ff, #ff00c8, #00fff7, #00ff88) 1;
+            box-shadow: 0 0 10px #c500ff, 0 0 20px #ff00c8, 0 0 30px #00fff7;
+        }
+        .card-header {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-shadow: 0 0 5px #ff00c8, 0 0 10px #c500ff;
+            font-size: 1.2rem;
+        }
+
+        /* ================= INPUTS ================= */
+        input[type="text"], textarea, select {
+            background-color: #1a1a1a;
+            border: 1px solid #00fff7;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 0.5rem;
+            width: 100%;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 5px #00fff7 inset;
+            font-weight: 500;
+        }
+        textarea { resize: vertical; }
+
+        /* ================= LABELS ================= */
+        label {
+            color: #ff66ff;
+            font-weight: bold;
+            text-shadow: 0 0 3px #ff33ff;
+        }
+
+        /* ================= BUTTONS ================= */
+        .btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 10px;
+            border: none;
+            color: #ffffff;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .btn-success {
+            background: linear-gradient(90deg, #00ff88, #00fff7);
+            box-shadow: 0 0 10px #00ff88, 0 0 20px #00fff7;
+        }
+        .btn-success:hover {
+            background: linear-gradient(270deg, #00fff7, #00ff88);
+            box-shadow: 0 0 20px #00fff7, 0 0 40px #00ff88;
+        }
+        .btn-secondary {
+            background: linear-gradient(90deg, #c500ff, #ff00c8);
+            box-shadow: 0 0 10px #c500ff, 0 0 20px #ff00c8;
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(270deg, #ff00c8, #c500ff);
+            box-shadow: 0 0 20px #ff00c8, 0 0 40px #c500ff;
+        }
+
+        /* ================= FOCUS EFFECT ================= */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #ff00c8;
+            box-shadow: 0 0 10px #ff00c8 inset;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+    <h1>Edit Bug 🛠️</h1>
+
+    <div class="card">
+        <div class="card-header">Update Bug Details</div>
+        <div class="card-body">
+            <form method="POST">
+                <!-- Bug Title -->
+                <label for="title">Bug Title</label>
+                <input type="text" name="title" value="{{ bug['title'] }}" placeholder="Bug Title" required>
+
+                <!-- Bug Description -->
+                <label for="description">Bug Description</label>
+                <textarea name="description" placeholder="Bug Description" required>{{ bug['description'] }}</textarea>
+
+                <!-- Severity Dropdown -->
+                <label for="severity">Severity</label>
+                <select name="severity" required>
+                    <option value="Low" {% if bug['severity']=='Low' %}selected{% endif %}>Low</option>
+                    <option value="Medium" {% if bug['severity']=='Medium' %}selected{% endif %}>Medium</option>
+                    <option value="High" {% if bug['severity']=='High' %}selected{% endif %}>High</option>
+                    <option value="Critical" {% if bug['severity']=='Critical' %}selected{% endif %}>Critical</option>
+                </select>
+
+                <!-- Status Dropdown -->
+                <label for="status">Status</label>
+                <select name="status" required>
+                    <option value="Open" {% if bug['status']=='Open' %}selected{% endif %}>Open</option>
+                    <option value="In Progress" {% if bug['status']=='In Progress' %}selected{% endif %}>In Progress</option>
+                    <option value="Resolved" {% if bug['status']=='Resolved' %}selected{% endif %}>Resolved</option>
+                    <option value="Closed" {% if bug['status']=='Closed' %}selected{% endif %}>Closed</option>
+                </select>
+
+                <!-- Priority Dropdown -->
+                <label for="priority">Priority</label>
+                <select name="priority" required>
+                    <option value="Low" {% if bug['priority']=='Low' %}selected{% endif %}>Low</option>
+                    <option value="Medium" {% if bug['priority']=='Medium' %}selected{% endif %}>Medium</option>
+                    <option value="High" {% if bug['priority']=='High' %}selected{% endif %}>High</option>
+                    <option value="Critical" {% if bug['priority']=='Critical' %}selected{% endif %}>Critical</option>
+                </select>
+
+                <!-- Assignee -->
+                <label for="assignee">Assign To</label>
+                <input type="text" name="assignee" value="{{ bug['assignee'] }}" placeholder="Developer Name">
+
+                <!-- Buttons -->
+                <button type="submit" class="btn btn-success">Update Bug</button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

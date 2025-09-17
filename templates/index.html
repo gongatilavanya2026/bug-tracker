@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Bug Tracker</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* ================= NAVBAR ================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            background: #111111;
+            border-radius: 12px;
+            border: 1px solid;
+            border-image: linear-gradient(45deg, #b300ff, #ff33ff, #33fff0, #00ff99) 1;
+            box-shadow: 0 0 10px #b300ff, 0 0 20px #ff33ff;
+        }
+        .navbar h2 {
+            background: linear-gradient(90deg, #ddd4e0ff, #ff33ff, #33fff0, #00ff99);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+        .navbar .user-info {
+            color: #33fff0;
+            font-weight: bold;
+        }
+        .btn-logout, .btn-dashboard {
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(90deg, #ff33ff, #b300ff);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+        }
+        .btn-logout:hover, .btn-dashboard:hover {
+            background: linear-gradient(270deg, #b300ff, #ff33ff);
+            box-shadow: 0 0 10px #ff33ff, 0 0 20px #b300ff;
+        }
+
+        /* ================= TABLE ================= */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 0.6rem;
+            text-align: left;
+        }
+        th { background: #222; }
+        td { background: #111; }
+        a.btn-edit, button.btn-delete {
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            margin-right: 0.3rem;
+        }
+        a.btn-edit { background: #00fff7; }
+        a.btn-edit:hover { background: #00ff88; }
+        button.btn-delete { background: #ff0066; }
+        button.btn-delete:hover { background: #ff3399; }
+
+        /* ================= FORM ================= */
+        .search-add {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        input[type="text"] {
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #00fff7;
+            background: #111;
+            color: #fff;
+            width: 250px;
+        }
+        button.btn-add {
+            background: #00ff88;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button.btn-add:hover { background: #00fff7; }
+
+        .alert {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+        .alert-success { background: #00ff88; color: #000; }
+        .alert-danger { background: #ff0066; color: #fff; }
+        .alert-info { background: #00fff7; color: #000; }
+    </style>
+</head>
+<body class="container mt-5">
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h2>🪲 AI Bug Tracker</h2>
+        <div>
+            <span class="user-info">Hello, {{ session['username'] }}</span>
+            <a href="{{ url_for('dashboard') }}" class="btn-dashboard">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{category}}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Search and Add -->
+    <div class="search-add">
+        <form method="GET" action="{{ url_for('index') }}">
+            <input type="text" name="q" placeholder="Search bugs..." value="{{ request.args.get('q','') }}">
+            <button type="submit" class="btn-add">Search</button>
+        </form>
+        <form method="POST" action="{{ url_for('add_bug') }}">
+            <input type="text" name="title" placeholder="Bug Title" required>
+            <input type="text" name="description" placeholder="Bug Description" required>
+            <button type="submit" class="btn-add">Add Bug</button>
+        </form>
+    </div>
+
+    <!-- Bug Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Severity</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Assignee</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bug in bugs %}
+            <tr>
+                <td>{{ bug['id'] }}</td>
+                <td>{{ bug['title'] }}</td>
+                <td>{{ bug['description'] }}</td>
+                <td>{{ bug['severity'] }}</td>
+                <td>{{ bug['priority'] }}</td>
+                <td>{{ bug['status'] }}</td>
+                <td>{{ bug['assignee'] }}</td>
+                <td>
+                    <a href="{{ url_for('edit_bug', bug_id=bug['id']) }}" class="btn-edit">Edit</a>
+                    <form method="POST" action="{{ url_for('delete_bug', bug_id=bug['id']) }}" style="display:inline;">
+                        <button type="submit" class="btn-delete" onclick="return confirm('Delete this bug?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
